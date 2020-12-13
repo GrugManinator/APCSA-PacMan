@@ -15,6 +15,7 @@ public class PacManage extends JFrame implements Runnable, KeyListener
     ArrayList<GoldCoin> coins = new ArrayList<GoldCoin>();
     ArrayList<Rectangle> barriers = new ArrayList<Rectangle>();
     ArrayList<GhostMan> ghost = new ArrayList<GhostMan>();
+    ArrayList<GhostMan> ghostOuch = new ArrayList<GhostMan>();
     public PacManage()
     {
         p = new PackMann(400, 400);
@@ -31,10 +32,11 @@ public class PacManage extends JFrame implements Runnable, KeyListener
         barriers.add(new Rectangle(15, 65, 15, 600));
         barriers.add(new Rectangle(174, 105, 80, 60));
         barriers.add(new Rectangle(174, 255, 80, 40));
-        ghost.add(new GhostMan(/*400,200,*/Color.red,(int)Math.random()*10-5, (int)Math.random()*10-5));
+        ghost.add(new GhostMan(/*400,200,*/Color.red,(int)(Math.random()*10)-5, (int)Math.random()*10-5));
         ghost.add(new GhostMan(/*400,200,*/Color.orange, (int)Math.random()*10-5, (int)Math.random()*10-5));
         ghost.add(new GhostMan(/*400,200,*/(new Color(11, 180, 221)), (int)Math.random()*10-5, (int)Math.random()*10-5));
         ghost.add(new GhostMan(/*400,200,*/(new Color(221, 144, 186)), (int)Math.random()*10-5, (int)Math.random()*10-5));
+        ghostOuch.add(new GhostMan(/*400,200,*/(new Color(221, 144, 186)), (int)Math.random()*10-5, (int)Math.random()*10-5));
         con.setLayout(new FlowLayout());
         addKeyListener(this);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -70,6 +72,13 @@ public class PacManage extends JFrame implements Runnable, KeyListener
                     // ghost.moveBack(barriers.get(x));
                     // }
                 }
+                // for(int x = 0; x < ghost.size(); x++)
+                // {
+                    // if(p.getR().intersects(ghost.get(x).getR()))
+                    // {
+                        // ghost.get(x).drawGhostOuch();
+                    // }
+                // }
 
                 repaint();
             }
@@ -98,6 +107,10 @@ public class PacManage extends JFrame implements Runnable, KeyListener
         for(int x = 0; x < ghost.size(); x++)
         {
             ghost.get(x).drawGhost(painter);
+        }
+        for(int x = 0; x < ghostOuch.size(); x++)
+        {
+            ghostOuch.get(x).drawGhostOuch(painter);
         }
 
         p.drawPacMan(painter);
