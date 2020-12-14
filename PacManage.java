@@ -16,6 +16,7 @@ public class PacManage extends JFrame implements Runnable, KeyListener
     ArrayList<Rectangle> barriers = new ArrayList<Rectangle>();
     ArrayList<GhostMan> ghost = new ArrayList<GhostMan>();
     ArrayList<GhostMan> ghostOuch = new ArrayList<GhostMan>();
+    ArrayList<SuperPellet> sp = new ArrayList<SuperPellet>();
     public PacManage()
     {
         p = new PackMann(400, 400);
@@ -28,15 +29,16 @@ public class PacManage extends JFrame implements Runnable, KeyListener
         coins.add(new GoldCoin(100, 300));
         coins.add(new GoldCoin(200, 300));
         coins.add(new GoldCoin(300, 300));
+        sp.add(new SuperPellet(400,600));
         barriers.add(new Rectangle(15, 50, 5, 15));
         barriers.add(new Rectangle(15, 65, 15, 600));
         barriers.add(new Rectangle(174, 105, 80, 60));
         barriers.add(new Rectangle(174, 255, 80, 40));
-        ghost.add(new GhostMan(/*400,200,*/Color.red,(int)(Math.random()*10)-5, (int)Math.random()*10-5));
+        ghost.add(new GhostMan(/*400,200,*/Color.red,0,0));
         ghost.add(new GhostMan(/*400,200,*/Color.orange, (int)Math.random()*10-5, (int)Math.random()*10-5));
         ghost.add(new GhostMan(/*400,200,*/(new Color(11, 180, 221)), (int)Math.random()*10-5, (int)Math.random()*10-5));
         ghost.add(new GhostMan(/*400,200,*/(new Color(221, 144, 186)), (int)Math.random()*10-5, (int)Math.random()*10-5));
-        ghostOuch.add(new GhostMan(/*400,200,*/(new Color(221, 144, 186)), (int)Math.random()*10-5, (int)Math.random()*10-5));
+        ghost.add(new GhostMan(/*400,200,*/(new Color(221, 144, 186)), (int)Math.random()*10-5, (int)Math.random()*10-5));
         con.setLayout(new FlowLayout());
         addKeyListener(this);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -72,13 +74,13 @@ public class PacManage extends JFrame implements Runnable, KeyListener
                     // ghost.moveBack(barriers.get(x));
                     // }
                 }
-                // for(int x = 0; x < ghost.size(); x++)
-                // {
-                    // if(p.getR().intersects(ghost.get(x).getR()))
-                    // {
-                        // ghost.get(x).drawGhostOuch();
-                    // }
-                // }
+                for(int x = 0; x < sp.size(); x++)
+                {
+                    if(p.getR().intersects(sp.get(x).getR()))
+                    {
+                        sp.get(x).eatSP();
+                    }
+                }
 
                 repaint();
             }
@@ -107,11 +109,15 @@ public class PacManage extends JFrame implements Runnable, KeyListener
         for(int x = 0; x < ghost.size(); x++)
         {
             ghost.get(x).drawGhost(painter);
+            if(p.getR().intersects(ghost.get(x).getR()))
+            {
+                ghost.get(x).drawGhostOuch(painter);
+            }
         }
-        for(int x = 0; x < ghostOuch.size(); x++)
-        {
-            ghostOuch.get(x).drawGhostOuch(painter);
-        }
+        // for(int x = 0; x < ghostOuch.size(); x++)
+        // {
+        // ghostOuch.get(x).drawGhostOuch(painter);
+        // }
 
         p.drawPacMan(painter);
         painter.dispose();
@@ -128,6 +134,11 @@ public class PacManage extends JFrame implements Runnable, KeyListener
     public void update(Graphics g)
     {
         paint(g);
+    }
+
+    public void pacPanic()
+    {
+        
     }
 
     public void keyPressed(KeyEvent k){}
